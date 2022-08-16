@@ -1,7 +1,16 @@
 const puppeteer = require("puppeteer");
 const scraper = require("./scraper");
 
-const urlToVisit = "";
+const createCsvWriter = require("csv-writer").createObjectCsvWriter;
+const csvWriter = createCsvWriter({
+  path: "city and state.csv",
+  header: [
+    { id: "cityName", title: "city" },
+    { id: "stateName", title: "state" },
+  ],
+});
+
+const urlToVisit = "http://www.theus50.com/newyork/cities.php";
 
 async function main() {
   // headless: running without a graphical user interface.
@@ -19,6 +28,9 @@ async function main() {
 
   console.log(scrapingResults);
 
+  csvWriter
+    .writeRecords(scrapingResults)
+    .then(() => console.log("The CSV file was written successfully"));
   // console.log(craigslistPage);
 }
 
